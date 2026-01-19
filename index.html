@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chinancu阿拉伯语背单词</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #e94560;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .arabic-word {
+            font-size: 4.5rem;
+            text-align: center;
+            margin: 20px 0;
+            color: #ffd700;
+            direction: rtl;
+            line-height: 1.5;
+            font-family: 'Traditional Arabic', 'Arabic Typesetting', 'Scheherazade', serif;
+        }
+
+        .transliteration {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #00d9ff;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .phonetic {
+            text-align: center;
+            font-size: 1rem;
+            color: #b0d8ff;
+            margin-bottom: 15px;
+        }
+
+        .chinese-meaning {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .english-meaning {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            margin-bottom: 20px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: #e94560;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-play {
+            background: linear-gradient(45deg, #00d9ff, #0099cc);
+            color: #fff;
+        }
+
+        .btn-play:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,217,255,0.4);
+        }
+
+        .btn-refresh {
+            background: linear-gradient(45deg, #e94560, #c73e54);
+            color: #fff;
+        }
+
+        .btn-refresh:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(233,69,96,0.4);
+        }
+
+        .btn-auto {
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+        }
+
+        .btn-auto.active {
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+        }
+
+        .btn-auto:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255,215,0,0.4);
+        }
+
+        .btn-mastered {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: #fff;
+        }
+
+        .btn-mastered:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(155,89,182,0.4);
+        }
+
+        .btn-review {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: #fff;
+        }
+
+        .btn-review:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(52,152,219,0.4);
+        }
+
+        .settings {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .settings h3 {
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .setting-row label {
+            color: #a0a0a0;
+        }
+
+        .setting-row input[type="range"] {
+            width: 150px;
+        }
+
+        .setting-row select {
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .setting-row select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e94560, #ffd700);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #e94560;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 开车模式 - 大按钮 */
+        .driving-mode .btn {
+            padding: 25px 50px;
+            font-size: 1.5rem;
+        }
+
+        .driving-mode .arabic-word {
+            font-size: 6rem;
+        }
+
+        .driving-mode .chinese-meaning {
+            font-size: 3rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .arabic-word {
+                font-size: 3rem;
+            }
+
+            .chinese-meaning {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .stat-number {
+                font-size: 1.3rem;
+            }
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .speed-value {
+            min-width: 40px;
+            text-align: center;
+            color: #ffd700;
+        }
+
+        /* 播放状态指示 */
+        .playing {
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .word-counter {
+            text-align: center;
+            color: #a0a0a0;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* 已掌握单词列表 */
+        .mastered-section {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .mastered-section h3 {
+            color: #9b59b6;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mastered-list {
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .mastered-item {
+            background: rgba(155,89,182,0.2);
+            border: 1px solid rgba(155,89,182,0.4);
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mastered-item .arabic {
+            color: #ffd700;
+            direction: rtl;
+        }
+
+        .mastered-item .chinese {
+            color: #a0a0a0;
+        }
+
+        .mastered-item .remove-btn {
+            background: none;
+            border: none;
+            color: #e94560;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0 5px;
+        }
+
+        .mastered-item .remove-btn:hover {
+            color: #ff6b6b;
+        }
+
+        .clear-btn {
+            background: rgba(233,69,96,0.2);
+            border: 1px solid #e94560;
+            color: #e94560;
+            padding: 5px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .clear-btn:hover {
+            background: rgba(233,69,96,0.4);
+        }
+
+        .category-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .category-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .category-btn.active {
+            background: #e94560;
+            border-color: #e94560;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 10px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeInOut 2s ease;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>chinancu阿拉伯语背单词</h1>
+            <p class="subtitle">标准阿拉伯语 (MSA) | 开车听单词 | 蓝牙语音学习</p>
+        </header>
+
+        <div class="category-selector" id="category-selector">
+            <button class="category-btn active" data-category="all">全部</button>
+            <button class="category-btn" data-category="greetings">问候语</button>
+            <button class="category-btn" data-category="numbers">数字</button>
+            <button class="category-btn" data-category="family">家庭</button>
+            <button class="category-btn" data-category="food_and_drink">食物</button>
+            <button class="category-btn" data-category="colors">颜色</button>
+            <button class="category-btn" data-category="animals">动物</button>
+            <button class="category-btn" data-category="body">身体</button>
+            <button class="category-btn" data-category="time">时间</button>
+            <button class="category-btn" data-category="verbs">动词</button>
+            <button class="category-btn" data-category="adjectives">形容词</button>
+        </div>
+
+        <div class="card" id="word-card">
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>正在加载单词...</p>
+            </div>
+            <div id="word-content" style="display:none;">
+                <div style="text-align:center;">
+                    <span class="category-badge" id="category">加载中...</span>
+                </div>
+                <div class="arabic-word" id="arabic-word">مرحبا</div>
+                <div class="transliteration" id="transliteration">marhaba</div>
+                <div class="phonetic" id="phonetic">/marhaban/</div>
+                <div class="chinese-meaning" id="chinese-meaning">你好</div>
+                <div class="english-meaning" id="english-meaning">Hello</div>
+                <div class="word-counter" id="word-counter">第 1 个单词</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-play" id="btn-play-arabic" onclick="playArabic()">
+                🔊 阿拉伯语
+            </button>
+            <button class="btn btn-play" id="btn-play-chinese" onclick="playChinese()">
+                🗣️ 中文
+            </button>
+            <button class="btn btn-refresh" onclick="loadNewWord()">
+                🔄 下一个
+            </button>
+            <button class="btn btn-mastered" onclick="markAsMastered()">
+                ✅ 已掌握
+            </button>
+            <button class="btn btn-auto" id="btn-auto" onclick="toggleAutoPlay()">
+                ▶️ 自动播放
+            </button>
+        </div>
+
+        <div class="settings">
+            <h3>⚙️ 设置</h3>
+            <div class="setting-row">
+                <label>自动播放间隔：</label>
+                <div class="speed-control">
+                    <input type="range" id="interval-slider" min="3" max="15" value="6" onchange="updateInterval()">
+                    <span class="speed-value" id="interval-value">6秒</span>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label>语速：</label>
+                <div class="speed-control">
+                    <input type="range" id="speed-slider" min="0.5" max="1.2" step="0.1" value="0.7" onchange="updateSpeed()">
+                    <span class="speed-value" id="speed-value">0.7x</span>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label>播放模式：</label>
+                <select id="play-mode" onchange="updatePlayMode()">
+                    <option value="arabic-chinese">先阿拉伯语后中文</option>
+                    <option value="chinese-arabic">先中文后阿拉伯语</option>
+                    <option value="arabic-only">仅阿拉伯语</option>
+                    <option value="all">全部(阿+英+中)</option>
+                </select>
+            </div>
+            <div class="setting-row">
+                <label>开车模式（大字体）：</label>
+                <button class="category-btn" id="driving-mode-btn" onclick="toggleDrivingMode()">关闭</button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="mastered-count">0</div>
+                <div class="stat-label">已掌握</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="remaining-count">0</div>
+                <div class="stat-label">待学习</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="session-count">0</div>
+                <div class="stat-label">本次学习</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="total-count">0</div>
+                <div class="stat-label">总词汇</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+
+        <div class="mastered-section">
+            <h3>
+                <span>📚 已掌握的单词</span>
+                <button class="clear-btn" onclick="clearMastered()">清空</button>
+            </h3>
+            <div class="mastered-list" id="mastered-list">
+                <p style="color:#a0a0a0;">还没有掌握的单词，点击"已掌握"添加</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // 词汇数据来源（GitHub）
+        const WORDS_URL = 'https://raw.githubusercontent.com/ismael-almaali/arabic-vocab-for-api/main/word-list.json';
+
+        // MSA分类
+        const msaCategories = ['adjectives', 'adverbs', 'animals', 'body', 'colors', 'family', 'food_and_drink', 'greetings', 'house', 'nature', 'numbers', 'occupations', 'phrases', 'pronouns', 'questions', 'school', 'time', 'transportation', 'verbs', 'weather'];
+
+        // 分类中文翻译
+        const categoryTranslations = {
+            'adjectives': '形容词',
+            'adverbs': '副词',
+            'animals': '动物',
+            'body': '身体部位',
+            'colors': '颜色',
+            'family': '家庭',
+            'food_and_drink': '食物饮品',
+            'greetings': '问候语',
+            'house': '房屋',
+            'nature': '自然',
+            'numbers': '数字',
+            'occupations': '职业',
+            'phrases': '短语',
+            'pronouns': '代词',
+            'questions': '疑问词',
+            'school': '学校',
+            'time': '时间',
+            'transportation': '交通',
+            'verbs': '动词',
+            'weather': '天气',
+            'general': '词汇',
+            'all': '全部'
+        };
+
+        // 英文到中文翻译
+        const englishToChineseMap = {
+            'hello': '你好', 'hi': '你好', 'goodbye': '再见', 'good morning': '早上好',
+            'good evening': '晚上好', 'good night': '晚安', 'welcome': '欢迎',
+            'thank you': '谢谢', 'thanks': '谢谢', 'please': '请', 'sorry': '对不起',
+            'excuse me': '打扰一下', 'yes': '是', 'no': '不', 'ok': '好的',
+            'one': '一', 'two': '二', 'three': '三', 'four': '四', 'five': '五',
+            'six': '六', 'seven': '七', 'eight': '八', 'nine': '九', 'ten': '十',
+            'zero': '零', 'hundred': '百', 'thousand': '千', 'first': '第一',
+            'second': '第二', 'third': '第三',
+            'red': '红色', 'blue': '蓝色', 'green': '绿色', 'yellow': '黄色',
+            'black': '黑色', 'white': '白色', 'orange': '橙色', 'purple': '紫色',
+            'pink': '粉色', 'brown': '棕色', 'gray': '灰色', 'grey': '灰色',
+            'father': '父亲', 'mother': '母亲', 'son': '儿子', 'daughter': '女儿',
+            'brother': '兄弟', 'sister': '姐妹', 'grandfather': '祖父',
+            'grandmother': '祖母', 'uncle': '叔叔', 'aunt': '阿姨',
+            'husband': '丈夫', 'wife': '妻子', 'family': '家庭', 'child': '孩子',
+            'children': '孩子们', 'baby': '婴儿', 'parent': '父母', 'parents': '父母',
+            'cat': '猫', 'dog': '狗', 'bird': '鸟', 'fish': '鱼', 'horse': '马',
+            'cow': '牛', 'sheep': '羊', 'goat': '山羊', 'chicken': '鸡', 'duck': '鸭',
+            'lion': '狮子', 'tiger': '老虎', 'elephant': '大象', 'monkey': '猴子',
+            'rabbit': '兔子', 'mouse': '老鼠', 'snake': '蛇', 'camel': '骆驼',
+            'donkey': '驴', 'wolf': '狼', 'bear': '熊', 'deer': '鹿',
+            'water': '水', 'bread': '面包', 'rice': '米饭', 'meat': '肉',
+            'egg': '鸡蛋', 'milk': '牛奶', 'coffee': '咖啡', 'tea': '茶',
+            'juice': '果汁', 'fruit': '水果', 'apple': '苹果', 'banana': '香蕉',
+            'vegetable': '蔬菜', 'tomato': '番茄', 'potato': '土豆', 'onion': '洋葱',
+            'sugar': '糖', 'salt': '盐', 'oil': '油', 'butter': '黄油',
+            'cheese': '奶酪', 'soup': '汤', 'salad': '沙拉', 'food': '食物',
+            'head': '头', 'face': '脸', 'eye': '眼睛', 'eyes': '眼睛',
+            'ear': '耳朵', 'ears': '耳朵', 'nose': '鼻子', 'mouth': '嘴',
+            'tooth': '牙齿', 'teeth': '牙齿', 'tongue': '舌头', 'hair': '头发',
+            'hand': '手', 'hands': '手', 'finger': '手指', 'arm': '手臂',
+            'leg': '腿', 'foot': '脚', 'feet': '脚', 'heart': '心脏',
+            'stomach': '胃', 'back': '背', 'neck': '脖子', 'shoulder': '肩膀',
+            'today': '今天', 'tomorrow': '明天', 'yesterday': '昨天', 'now': '现在',
+            'morning': '早上', 'afternoon': '下午', 'evening': '晚上', 'night': '夜晚',
+            'day': '天', 'week': '周', 'month': '月', 'year': '年',
+            'hour': '小时', 'minute': '分钟', 'time': '时间',
+            'sun': '太阳', 'moon': '月亮', 'star': '星星', 'cloud': '云',
+            'rain': '雨', 'snow': '雪', 'wind': '风', 'hot': '热', 'cold': '冷',
+            'warm': '温暖', 'weather': '天气',
+            'good': '好', 'bad': '坏', 'big': '大', 'small': '小', 'large': '大的',
+            'little': '小的', 'tall': '高', 'short': '矮/短', 'long': '长',
+            'new': '新', 'old': '旧/老', 'young': '年轻', 'beautiful': '美丽',
+            'happy': '快乐', 'sad': '悲伤', 'angry': '生气', 'tired': '累',
+            'hungry': '饿', 'thirsty': '渴', 'sick': '生病', 'healthy': '健康',
+            'fast': '快', 'slow': '慢', 'easy': '容易', 'difficult': '困难',
+            'clean': '干净', 'dirty': '脏', 'full': '满', 'empty': '空',
+            'heavy': '重', 'light': '轻', 'strong': '强', 'weak': '弱',
+            'important': '重要', 'delicious': '美味', 'expensive': '贵', 'cheap': '便宜',
+            'eat': '吃', 'drink': '喝', 'sleep': '睡觉', 'walk': '走', 'run': '跑',
+            'sit': '坐', 'stand': '站', 'go': '去', 'come': '来', 'see': '看',
+            'hear': '听', 'speak': '说', 'talk': '谈话', 'read': '读', 'write': '写',
+            'work': '工作', 'study': '学习', 'learn': '学习', 'teach': '教',
+            'know': '知道', 'think': '想', 'want': '想要', 'need': '需要',
+            'like': '喜欢', 'love': '爱', 'help': '帮助', 'give': '给', 'take': '拿',
+            'buy': '买', 'sell': '卖', 'pay': '付钱', 'open': '打开', 'close': '关闭',
+            'start': '开始', 'stop': '停止', 'finish': '完成', 'wait': '等待',
+            'play': '玩', 'cook': '做饭', 'wash': '洗', 'drive': '开车',
+            'fly': '飞', 'swim': '游泳', 'live': '住', 'laugh': '笑', 'cry': '哭',
+            'house': '房子', 'home': '家', 'room': '房间', 'door': '门',
+            'window': '窗户', 'kitchen': '厨房', 'bathroom': '浴室',
+            'school': '学校', 'hospital': '医院', 'market': '市场', 'shop': '商店',
+            'restaurant': '餐厅', 'hotel': '酒店', 'street': '街道', 'city': '城市',
+            'country': '国家', 'mountain': '山', 'river': '河', 'sea': '海',
+            'car': '汽车', 'bus': '公交车', 'train': '火车', 'plane': '飞机',
+            'ship': '船', 'bicycle': '自行车', 'taxi': '出租车',
+            'teacher': '老师', 'doctor': '医生', 'engineer': '工程师',
+            'student': '学生', 'driver': '司机', 'farmer': '农民', 'worker': '工人',
+            'man': '男人', 'woman': '女人', 'boy': '男孩', 'girl': '女孩',
+            'person': '人', 'people': '人们', 'friend': '朋友', 'name': '名字',
+            'book': '书', 'pen': '笔', 'paper': '纸', 'phone': '电话',
+            'money': '钱', 'thing': '东西', 'place': '地方', 'world': '世界',
+            'life': '生活', 'peace': '和平', 'god': '真主', 'allah': '真主',
+            'prayer': '祈祷', 'how': '怎么', 'what': '什么', 'where': '哪里',
+            'when': '什么时候', 'who': '谁', 'why': '为什么', 'which': '哪个',
+            'this': '这个', 'that': '那个', 'here': '这里', 'there': '那里',
+            'very': '非常', 'also': '也', 'only': '只', 'all': '所有',
+            'some': '一些', 'many': '很多', 'much': '很多', 'more': '更多',
+            'i': '我', 'you': '你', 'he': '他', 'she': '她', 'it': '它',
+            'we': '我们', 'they': '他们', 'my': '我的', 'your': '你的',
+            'his': '他的', 'her': '她的', 'our': '我们的', 'their': '他们的',
+            'and': '和', 'or': '或', 'but': '但是', 'because': '因为',
+            'if': '如果', 'then': '然后', 'so': '所以', 'not': '不',
+            'left': '左', 'right': '右', 'up': '上', 'down': '下',
+            'north': '北', 'south': '南', 'east': '东', 'west': '西'
+        };
+
+        // 状态变量
+        let currentCategory = 'all';
+        let currentWord = null;
+        let allWords = [];
+        let wordCache = [];
+        let autoPlayTimer = null;
+        let isAutoPlaying = false;
+        let playInterval = 6;
+        let speechRate = 0.7;
+        let playMode = 'arabic-chinese';
+        let sessionCount = 0;
+        let isDrivingMode = false;
+        const audioPlayer = new Audio();
+        audioPlayer.preload = 'auto';
+
+        // 已掌握的单词（存储在localStorage）
+        let masteredWords = JSON.parse(localStorage.getItem('masteredWords') || '[]');
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllWords();
+            setupCategoryButtons();
+            updateMasteredList();
+            updateStats();
+        });
+
+        // 设置分类按钮
+        function setupCategoryButtons() {
+            document.querySelectorAll('.category-btn[data-category]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.category-btn[data-category]').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentCategory = btn.dataset.category;
+                    filterWords();
+                    displayRandomWord();
+                });
+            });
+        }
+
+        // 加载所有MSA词汇
+        async function loadAllWords() {
+            showLoading(true);
+            allWords = [];
+
+            try {
+                const response = await fetch(WORDS_URL);
+                const words = response.ok ? await response.json() : [];
+                if (Array.isArray(words)) {
+                    words.forEach(word => {
+                        allWords.push({
+                            arabic: word.arabic,
+                            english: word.english,
+                            source: 'general'
+                        });
+                    });
+                }
+
+                if (allWords.length === 0) {
+                    useFallbackData();
+                } else {
+                    updateCategoryAvailability();
+                    filterWords();
+                    displayRandomWord();
+                }
+            } catch (error) {
+                console.error('加载失败:', error);
+                useFallbackData();
+            }
+
+            updateStats();
+        }
+
+        function updateCategoryAvailability() {
+            const hasCategories = allWords.some(word => word.source && word.source !== 'general');
+            const selector = document.getElementById('category-selector');
+            selector.style.display = hasCategories ? 'flex' : 'none';
+            if (!hasCategories) {
+                currentCategory = 'all';
+            }
+        }
+
+        // 备用数据
+        function useFallbackData() {
+            allWords = [
+                { arabic: 'مَرْحَبًا', english: 'Hello', transliteration: 'marhaban', source: 'greetings' },
+                { arabic: 'شُكْرًا', english: 'Thank you', transliteration: 'shukran', source: 'greetings' },
+                { arabic: 'نَعَم', english: 'Yes', transliteration: 'na\'am', source: 'phrases' },
+                { arabic: 'لا', english: 'No', transliteration: 'la', source: 'phrases' },
+                { arabic: 'كِتَاب', english: 'Book', transliteration: 'kitab', source: 'school' },
+                { arabic: 'مَاء', english: 'Water', transliteration: 'maa\'', source: 'food_and_drink' },
+                { arabic: 'بَيْت', english: 'House', transliteration: 'bayt', source: 'house' },
+                { arabic: 'سَلام', english: 'Peace', transliteration: 'salam', source: 'greetings' },
+                { arabic: 'صَبَاح الخَيْر', english: 'Good morning', transliteration: 'sabah al-khayr', source: 'greetings' },
+                { arabic: 'أَب', english: 'Father', transliteration: 'ab', source: 'family' },
+                { arabic: 'أُم', english: 'Mother', transliteration: 'umm', source: 'family' },
+                { arabic: 'وَاحِد', english: 'One', transliteration: 'wahid', source: 'numbers' },
+                { arabic: 'اِثْنَان', english: 'Two', transliteration: 'ithnan', source: 'numbers' },
+                { arabic: 'ثَلَاثَة', english: 'Three', transliteration: 'thalatha', source: 'numbers' },
+                { arabic: 'أَحْمَر', english: 'Red', transliteration: 'ahmar', source: 'colors' },
+                { arabic: 'أَزْرَق', english: 'Blue', transliteration: 'azraq', source: 'colors' },
+                { arabic: 'قِطَّة', english: 'Cat', transliteration: 'qitta', source: 'animals' },
+                { arabic: 'كَلْب', english: 'Dog', transliteration: 'kalb', source: 'animals' },
+                { arabic: 'يَأْكُل', english: 'Eat', transliteration: 'ya\'kul', source: 'verbs' },
+                { arabic: 'يَشْرَب', english: 'Drink', transliteration: 'yashrab', source: 'verbs' }
+            ];
+            updateCategoryAvailability();
+            filterWords();
+            displayRandomWord();
+        }
+
+        // 过滤单词（排除已掌握的）
+        function filterWords() {
+            const masteredSet = new Set(masteredWords.map(w => w.arabic));
+
+            wordCache = allWords.filter(word => {
+                // 排除已掌握的
+                if (masteredSet.has(word.arabic)) return false;
+                // 按分类过滤
+                if (currentCategory !== 'all' && word.source !== currentCategory) return false;
+                return true;
+            });
+
+            updateStats();
+        }
+
+        // 显示随机单词
+        function displayRandomWord() {
+            showLoading(false);
+
+            if (wordCache.length === 0) {
+                document.getElementById('arabic-word').textContent = '🎉';
+                document.getElementById('transliteration').textContent = '';
+                document.getElementById('phonetic').textContent = '';
+                document.getElementById('chinese-meaning').textContent = '全部掌握了！';
+                document.getElementById('english-meaning').textContent = 'All mastered!';
+                document.getElementById('category').textContent = '完成';
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * wordCache.length);
+            currentWord = wordCache[randomIndex];
+
+            document.getElementById('arabic-word').textContent = currentWord.arabic || '---';
+            const phoneticText = currentWord.phonetic || currentWord.transliteration || roughTransliteration(currentWord.arabic);
+            document.getElementById('transliteration').textContent = currentWord.transliteration || phoneticText || '---';
+            document.getElementById('phonetic').textContent = phoneticText ? `/${phoneticText}/` : '---';
+            document.getElementById('english-meaning').textContent = currentWord.english || '---';
+
+            const chineseMeaning = translateToChinese(currentWord.english);
+            document.getElementById('chinese-meaning').textContent = chineseMeaning;
+
+            const category = currentWord.source || 'vocabulary';
+            document.getElementById('category').textContent = categoryTranslations[category] || category;
+
+            sessionCount++;
+            document.getElementById('session-count').textContent = sessionCount;
+            document.getElementById('word-counter').textContent = `第 ${sessionCount} 个单词`;
+
+            updateStats();
+        }
+
+        // 翻译成中文
+        function translateToChinese(english) {
+            if (!english) return '---';
+            const lowerEnglish = english.toLowerCase().trim();
+
+            if (englishToChineseMap[lowerEnglish]) {
+                return englishToChineseMap[lowerEnglish];
+            }
+
+            for (const [eng, chi] of Object.entries(englishToChineseMap)) {
+                if (lowerEnglish.includes(eng) || eng.includes(lowerEnglish)) {
+                    return chi;
+                }
+            }
+
+            return english;
+        }
+
+        // 显示/隐藏加载状态
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('word-content').style.display = show ? 'none' : 'block';
+        }
+
+        function getArabicVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            return voices.find(v =>
+                v.lang.startsWith('ar') ||
+                v.name.toLowerCase().includes('arabic') ||
+                v.name.includes('العربية')
+            );
+        }
+
+        function getChineseVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            return voices.find(v =>
+                v.lang.startsWith('zh') ||
+                v.name.toLowerCase().includes('chinese') ||
+                v.name.includes('中文')
+            );
+        }
+
+        function getAudioUrl(word) {
+            return word?.audio || word?.audio_url || word?.sound || word?.sound_url || word?.mp3 || null;
+        }
+
+        function cancelSpeechAndAudio() {
+            window.speechSynthesis.cancel();
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+        }
+
+        function speakText(text, options = {}) {
+            return new Promise((resolve) => {
+                if (!text) {
+                    resolve();
+                    return;
+                }
+                const utterance = new SpeechSynthesisUtterance(text);
+                if (options.voice) {
+                    utterance.voice = options.voice;
+                    utterance.lang = options.voice.lang;
+                } else if (options.lang) {
+                    utterance.lang = options.lang;
+                }
+                utterance.rate = options.rate ?? speechRate;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                utterance.onend = resolve;
+                utterance.onerror = resolve;
+                window.speechSynthesis.speak(utterance);
+            });
+        }
+
+        function playAudioUrl(url) {
+            return new Promise((resolve) => {
+                if (!url) {
+                    resolve();
+                    return;
+                }
+                audioPlayer.src = url;
+                audioPlayer.onended = resolve;
+                audioPlayer.onerror = resolve;
+                const playPromise = audioPlayer.play();
+                if (playPromise?.catch) {
+                    playPromise.catch(() => resolve());
+                }
+            });
+        }
+
+        function roughTransliteration(arabic) {
+            if (!arabic) return '';
+            const map = {
+                'ا': 'a', 'أ': 'a', 'إ': 'i', 'آ': 'aa', 'ب': 'b', 'ت': 't', 'ث': 'th',
+                'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
+                'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': '\'',
+                'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+                'ه': 'h', 'و': 'w', 'ي': 'y', 'ة': 'h', 'ى': 'a', 'ء': '\'',
+                'ؤ': '\'', 'ئ': '\'', 'ـ': ''
+            };
+            let result = '';
+            for (const ch of arabic) {
+                if (ch === ' ') {
+                    result += ' ';
+                } else if (map[ch] !== undefined) {
+                    result += map[ch];
+                } else if (/[^\u0600-\u06FF]/.test(ch)) {
+                    result += '';
+                } else {
+                    result += ch;
+                }
+            }
+            return result.replace(/\s+/g, ' ').trim();
+        }
+
+        // 播放阿拉伯语 - 优先使用音频，备用语音合成
+        async function playArabic() {
+            const arabicWord = document.getElementById('arabic-word').textContent;
+            if (!arabicWord || arabicWord === '---' || arabicWord === '🎉') return;
+
+            cancelSpeechAndAudio();
+            const audioUrl = getAudioUrl(currentWord);
+
+            const btn = document.getElementById('btn-play-arabic');
+            btn.classList.add('playing');
+            if (audioUrl) {
+                await playAudioUrl(audioUrl);
+                btn.classList.remove('playing');
+                return;
+            }
+
+            const arabicVoice = getArabicVoice();
+            await speakText(arabicWord, { voice: arabicVoice, lang: arabicVoice ? undefined : 'ar-SA' });
+            btn.classList.remove('playing');
+        }
+
+        // 播放音译（作为备选）
+        function playTransliteration() {
+            const transliteration = document.getElementById('transliteration').textContent;
+            if (!transliteration || transliteration === '---') return;
+
+            speakText(transliteration, { lang: 'en-US' });
+        }
+
+        // 播放中文
+        async function playChinese() {
+            const chineseMeaning = document.getElementById('chinese-meaning').textContent;
+            if (!chineseMeaning || chineseMeaning === '---') return;
+
+            cancelSpeechAndAudio();
+            const chineseVoice = getChineseVoice();
+
+            const btn = document.getElementById('btn-play-chinese');
+            btn.classList.add('playing');
+            await speakText(chineseMeaning, { voice: chineseVoice, lang: chineseVoice ? undefined : 'zh-CN' });
+            btn.classList.remove('playing');
+        }
+
+        // 播放英文
+        async function playEnglish() {
+            const englishMeaning = document.getElementById('english-meaning').textContent;
+            if (!englishMeaning || englishMeaning === '---') return;
+
+            await speakText(englishMeaning, { lang: 'en-US' });
+        }
+
+        // 加载语音列表
+        window.speechSynthesis.onvoiceschanged = () => {
+            const voices = window.speechSynthesis.getVoices();
+            console.log('可用语音:', voices.map(v => `${v.name} (${v.lang})`));
+        };
+
+        // 加载新单词
+        function loadNewWord() {
+            if (wordCache.length > 0) {
+                displayRandomWord();
+            } else {
+                showToast('当前分类已全部掌握！');
+            }
+        }
+
+        // 标记为已掌握
+        function markAsMastered() {
+            if (!currentWord) return;
+
+            // 检查是否已经添加过
+            const exists = masteredWords.some(w => w.arabic === currentWord.arabic);
+            if (exists) {
+                showToast('这个单词已经掌握了');
+                loadNewWord();
+                return;
+            }
+
+            // 添加到已掌握列表
+            masteredWords.push({
+                arabic: currentWord.arabic,
+                english: currentWord.english,
+                chinese: translateToChinese(currentWord.english),
+                transliteration: currentWord.transliteration
+            });
+
+            // 保存到localStorage
+            localStorage.setItem('masteredWords', JSON.stringify(masteredWords));
+
+            // 更新界面
+            updateMasteredList();
+            filterWords();
+
+            showToast(`✅ 已掌握: ${currentWord.arabic}`);
+
+            // 显示下一个单词
+            loadNewWord();
+        }
+
+        // 更新已掌握列表显示
+        function updateMasteredList() {
+            const container = document.getElementById('mastered-list');
+
+            if (masteredWords.length === 0) {
+                container.innerHTML = '<p style="color:#a0a0a0;">还没有掌握的单词，点击"已掌握"添加</p>';
+                return;
+            }
+
+            container.innerHTML = masteredWords.map((word, index) => `
+                <div class="mastered-item">
+                    <span class="arabic">${word.arabic}</span>
+                    <span class="chinese">${word.chinese}</span>
+                    <button class="remove-btn" onclick="removeMastered(${index})" title="移除">×</button>
+                </div>
+            `).join('');
+        }
+
+        // 移除已掌握的单词
+        function removeMastered(index) {
+            const word = masteredWords[index];
+            masteredWords.splice(index, 1);
+            localStorage.setItem('masteredWords', JSON.stringify(masteredWords));
+            updateMasteredList();
+            filterWords();
+            showToast(`已移除: ${word.arabic}`);
+        }
+
+        // 清空所有已掌握
+        function clearMastered() {
+            if (masteredWords.length === 0) return;
+
+            if (confirm('确定要清空所有已掌握的单词吗？')) {
+                masteredWords = [];
+                localStorage.setItem('masteredWords', JSON.stringify(masteredWords));
+                updateMasteredList();
+                filterWords();
+                showToast('已清空所有掌握记录');
+            }
+        }
+
+        // 更新统计
+        function updateStats() {
+            document.getElementById('mastered-count').textContent = masteredWords.length;
+            document.getElementById('remaining-count').textContent = wordCache.length;
+            document.getElementById('total-count').textContent = allWords.length;
+
+            // 更新进度条
+            if (allWords.length > 0) {
+                const progress = (masteredWords.length / allWords.length) * 100;
+                document.getElementById('progress-fill').style.width = progress + '%';
+            }
+        }
+
+        // 显示提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('show');
+            void toast.offsetWidth; // 触发重绘
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // 自动播放
+        function toggleAutoPlay() {
+            const btn = document.getElementById('btn-auto');
+
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                btn.classList.remove('active');
+                btn.innerHTML = '▶️ 自动播放';
+            } else {
+                startAutoPlay();
+                btn.classList.add('active');
+                btn.innerHTML = '⏸️ 暂停';
+            }
+        }
+
+        function startAutoPlay() {
+            isAutoPlaying = true;
+            autoPlayLoop();
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            if (autoPlayTimer) {
+                clearTimeout(autoPlayTimer);
+                autoPlayTimer = null;
+            }
+            cancelSpeechAndAudio();
+        }
+
+        function waitMs(ms) {
+            return new Promise(resolve => {
+                autoPlayTimer = setTimeout(resolve, ms);
+            });
+        }
+
+        async function playCurrentWord() {
+            cancelSpeechAndAudio();
+
+            switch (playMode) {
+                case 'arabic-chinese':
+                    await playArabic();
+                    await waitMs(400);
+                    await playChinese();
+                    break;
+                case 'chinese-arabic':
+                    await playChinese();
+                    await waitMs(400);
+                    await playArabic();
+                    break;
+                case 'arabic-only':
+                    await playArabic();
+                    break;
+                case 'all':
+                    await playArabic();
+                    await waitMs(300);
+                    await playEnglish();
+                    await waitMs(300);
+                    await playChinese();
+                    break;
+            }
+        }
+
+        async function autoPlayLoop() {
+            while (isAutoPlaying) {
+                await playCurrentWord();
+                if (!isAutoPlaying) break;
+                await waitMs(playInterval * 1000);
+                if (!isAutoPlaying) break;
+                loadNewWord();
+            }
+        }
+
+        // 更新设置
+        function updateInterval() {
+            playInterval = parseInt(document.getElementById('interval-slider').value);
+            document.getElementById('interval-value').textContent = playInterval + '秒';
+
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                startAutoPlay();
+            }
+        }
+
+        function updateSpeed() {
+            speechRate = parseFloat(document.getElementById('speed-slider').value);
+            document.getElementById('speed-value').textContent = speechRate + 'x';
+        }
+
+        function updatePlayMode() {
+            playMode = document.getElementById('play-mode').value;
+        }
+
+        // 开车模式
+        function toggleDrivingMode() {
+            isDrivingMode = !isDrivingMode;
+            const btn = document.getElementById('driving-mode-btn');
+
+            if (isDrivingMode) {
+                document.body.classList.add('driving-mode');
+                btn.textContent = '开启';
+                btn.classList.add('active');
+            } else {
+                document.body.classList.remove('driving-mode');
+                btn.textContent = '关闭';
+                btn.classList.remove('active');
+            }
+        }
+
+        // 键盘快捷键
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case ' ':
+                    e.preventDefault();
+                    toggleAutoPlay();
+                    break;
+                case 'ArrowRight':
+                case 'n':
+                    loadNewWord();
+                    break;
+                case 'a':
+                    playArabic();
+                    break;
+                case 'c':
+                    playChinese();
+                    break;
+                case 'm':
+                    markAsMastered();
+                    break;
+            }
+        });
+
+        // 触摸滑动支持
+        let touchStartX = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchEndX - touchStartX;
+
+            if (Math.abs(diff) > 100) {
+                if (diff > 0) {
+                    playCurrentWord();
+                } else {
+                    loadNewWord();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
